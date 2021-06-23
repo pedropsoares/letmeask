@@ -1,10 +1,10 @@
 .button {
   height: 50px;
-  color: #FFF;
-  margin-top: 64px;
+  color: #fff;
+  padding: 0 32px;
   font-weight: 500;
   border-radius: 8px;
-  background: #835AFD;
+  background: #835afd;
 
   display: flex;
   align-items: center;
@@ -24,7 +24,7 @@
   }
 
   &:disabled {
-   opacity: 0.6; 
-   cursor: not-allowed;
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 }
