@@ -1,4 +1,5 @@
 import { useHistory } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 import illustrationImg from "../assets/images/illustration.svg";
 import googleIconImg from "../assets/images/google-icon.svg";
@@ -10,11 +11,13 @@ import "../styles/auth.scss";
 
 import { database } from "../service/firebase";
 import { FormEvent, useState } from "react";
+import { useRoom } from "../hooks/useRoom";
 
 export function Home() {
   const history = useHistory();
   const { user, singWithGoogle } = useAuth();
   const [roomCode, setRoomCode] = useState("");
+  const { authorId } = useRoom(roomCode);
 
   async function handleCreateRoom() {
     if (!user) await singWithGoogle();
@@ -26,18 +29,27 @@ export function Home() {
     event.preventDefault();
 
     if (roomCode.trim() === "") {
-      alert("field cannot be empty");
+      toast("field cannot be empty");
       return;
     }
 
     const roomRef = await database.ref(`rooms/${roomCode}`).get();
 
     if (!roomRef.exists()) {
-      alert("Room does not exists.");
+      toast("Room does not exists.");
       return;
     }
 
-    history.push(`/room/${roomCode}`);
+    if (roomRef.val().endedAt) {
+      toast("Room already cloused.");
+      return;
+    }
+
+    if (authorId !== user?.id) {
+      history.push(`/room/${roomCode}`);
+    } else {
+      history.push(`/admin/room/${roomCode}`);
+    }
   }
 
   return (
@@ -51,6 +63,8 @@ export function Home() {
         <p>Tire as duvidas da sua audiência em tempo real</p>
       </aside>
       <main>
+        <Toaster />
+
         <div className="main-content">
           <img src={logo} alt="letmeask" />
           <button onClick={handleCreateRoom} className="create-room">

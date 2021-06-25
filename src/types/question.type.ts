@@ -1,4 +1,4 @@
-export type Question = {
+export type QuestionType = {
   id?: string;
   author: {
     name: string,
@@ -6,7 +6,12 @@ export type Question = {
   },
   content: string,
   inAnswered: boolean,
-  isHighlighted: boolean
+  isHighlighted: boolean,
+  likeCount?: number,
+  likeId?: string | undefined,
+  Likes?: Record<string, {
+    authorId: string
+  }>
 }
 
 

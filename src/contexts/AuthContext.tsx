@@ -3,8 +3,8 @@ import { createContext, useEffect, useState } from "react";
 
 import { AuthContextType } from "../types/authContext.type";
 import { AuthContextProviderType } from "../types/authContextProvider.type";
-import { auth } from "../service/firebase";
 import { UserType } from "../types/user.type";
+import { auth } from "../service/firebase";
 
 
 
