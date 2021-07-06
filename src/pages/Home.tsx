@@ -16,8 +16,8 @@ import { useRoom } from "../hooks/useRoom";
 export function Home() {
   const history = useHistory();
   const { user, singWithGoogle } = useAuth();
-  const [roomCode, setRoomCode] = useState("");
-  const { authorId } = useRoom(roomCode);
+  const [roomId, setRoomId] = useState("");
+  const { isAuthoredByUser } = useRoom(roomId);
 
   async function handleCreateRoom() {
     if (!user) await singWithGoogle();
@@ -28,12 +28,12 @@ export function Home() {
   async function handleJoinRoom(event: FormEvent) {
     event.preventDefault();
 
-    if (roomCode.trim() === "") {
+    if (roomId.trim() === "") {
       toast("field cannot be empty");
       return;
     }
 
-    const roomRef = await database.ref(`rooms/${roomCode}`).get();
+    const roomRef = await database.ref(`rooms/${roomId}`).get();
 
     if (!roomRef.exists()) {
       toast("Room does not exists.");
@@ -45,10 +45,10 @@ export function Home() {
       return;
     }
 
-    if (authorId !== user?.id) {
-      history.push(`/room/${roomCode}`);
+    if (isAuthoredByUser) {
+      history.push(`/room/${roomId}`);
     } else {
-      history.push(`/admin/room/${roomCode}`);
+      history.push(`/admin/room/${roomId}`);
     }
   }
 
@@ -76,7 +76,7 @@ export function Home() {
             <input
               type="text"
               placeholder="Digite o código da sala"
-              onChange={(event) => setRoomCode(event.target.value)}
+              onChange={(event) => setRoomId(event.target.value)}
             />
             <Button type="submit">Entrar na sala</Button>
           </form>

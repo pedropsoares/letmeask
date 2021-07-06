@@ -14,6 +14,8 @@ import { database } from "../service/firebase";
 import { Button } from "../components/Button";
 import { useAuth } from "../hooks/useAuth";
 import { useRoom } from "../hooks/useRoom";
+import { Loading } from "../components/Loading";
+import { useEffect } from "react";
 
 type RoomParams = {
   id: string;
@@ -23,18 +25,24 @@ export function Room() {
   const history = useHistory();
   const { user, singWithGoogle } = useAuth();
   const { id: roomId } = useParams<RoomParams>();
+  const { questions, titleRoom, isAuthoredByUser } = useRoom(roomId);
+
   const [newQuestion, setNewQuestion] = useState("");
-  const { questions, titleRoom, authorId } = useRoom(roomId);
+  const [loading, setLoading] = useState(true);
 
   async function handleCreateRoom() {
     await singWithGoogle();
   }
 
-  if (user) {
-    if (authorId === user?.id) {
-      history.push(`/admin/room/${roomId}`);
+  useEffect(() => {
+    if (typeof isAuthoredByUser === "boolean") {
+      if (isAuthoredByUser) {
+        history.push(`/admin/room/${roomId}`);
+      } else {
+        setLoading(false)
+      }
     }
-  }
+  }, [history, isAuthoredByUser, roomId]);
 
   async function handleSendQuestion(event: FormEvent) {
     event.preventDefault();
@@ -77,6 +85,10 @@ export function Room() {
         authorId: user?.id,
       });
     }
+  }
+
+  if (loading) {
+    return <Loading />;
   }
 
   return (

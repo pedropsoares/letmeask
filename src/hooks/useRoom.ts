@@ -8,7 +8,7 @@ export function useRoom(roomId: string) {
   const { user } = useAuth();
   const [titleRoom, setTitleRoom] = useState("");
   const [questions, setQuestions] = useState<QuestionType[]>([]);
-  const [authorId, setAuthorId] = useState("");
+  const [isAuthoredByUser, setIsAuthoredByUser] = useState<boolean>();
 
   useEffect(() => {
     const roomRef = database.ref(`rooms/${roomId}`);
@@ -30,7 +30,7 @@ export function useRoom(roomId: string) {
           } as QuestionType),
         ),
       );
-      setAuthorId(dbRoom.authorId)
+      setIsAuthoredByUser(dbRoom.authorId === user?.id)
       setTitleRoom(dbRoom.title);
     });
 
@@ -39,6 +39,6 @@ export function useRoom(roomId: string) {
     }
   }, [roomId, user?.id]);
 
-  return { questions, titleRoom, authorId }
+  return { questions, titleRoom, isAuthoredByUser }
 
 }

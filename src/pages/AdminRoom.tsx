@@ -1,5 +1,5 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-// import toast, { Toaster } from "react-hot-toast";
 
 import logoImg from "../assets/images/logo.svg";
 import deleteImg from "../assets/images/delete.svg";
@@ -10,9 +10,9 @@ import "../styles/room.scss";
 
 import { Question } from "../components/Question";
 import { RoomCode } from "../components/RoomCode";
+import { Loading } from "../components/Loading";
 import { database } from "../service/firebase";
 import { Button } from "../components/Button";
-// import { useAuth } from "../hooks/useAuth";
 import { useRoom } from "../hooks/useRoom";
 
 type RoomParams = {
@@ -20,10 +20,21 @@ type RoomParams = {
 };
 
 export function AdminRoom() {
-  // const { user } = useAuth();
   const history = useHistory();
   const { id: roomId } = useParams<RoomParams>();
-  const { questions, titleRoom } = useRoom(roomId);
+  const { questions, titleRoom, isAuthoredByUser } = useRoom(roomId);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (typeof isAuthoredByUser === "boolean") {
+      if (!isAuthoredByUser) {
+        history.push(`/room/${roomId}`);
+      } else {
+        setLoading(false);
+      }
+    }
+  }, [history, isAuthoredByUser, roomId]);
 
   async function handleEndRoom() {
     await database.ref(`rooms/${roomId}`).update({
@@ -37,6 +48,10 @@ export function AdminRoom() {
     if (window.confirm("Tem certeza que você deseja excluir esta pergunta?")) {
       await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
     }
+  }
+
+  if (loading) {
+    return <Loading />;
   }
 
   return (
