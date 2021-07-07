@@ -30,6 +30,7 @@ export function useRoom(roomId: string) {
           } as QuestionType),
         ),
       );
+
       setIsAuthoredByUser(dbRoom.authorId === user?.id)
       setTitleRoom(dbRoom.title);
     });

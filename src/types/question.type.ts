@@ -5,7 +5,7 @@ export type QuestionType = {
     avatar: string
   },
   content: string,
-  inAnswered: boolean,
+  isAnswered: boolean,
   isHighlighted: boolean,
   likeCount?: number,
   likeId?: string | undefined,
