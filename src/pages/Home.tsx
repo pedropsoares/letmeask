@@ -1,3 +1,4 @@
+import { FormEvent, useState } from "react";
 import { useHistory } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -5,13 +6,12 @@ import illustrationImg from "../assets/images/illustration.svg";
 import googleIconImg from "../assets/images/google-icon.svg";
 import logo from "../assets/images/logo.svg";
 
-import { Button } from "../components/Button";
-import { useAuth } from "../hooks/useAuth";
-import "../styles/auth.scss";
-
+import { Button } from "../components/Button/index";
 import { database } from "../service/firebase";
-import { FormEvent, useState } from "react";
 import { useRoom } from "../hooks/useRoom";
+import { useAuth } from "../hooks/useAuth";
+
+import "../styles/auth.scss";
 
 export function Home() {
   const history = useHistory();

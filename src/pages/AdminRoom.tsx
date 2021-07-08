@@ -81,8 +81,6 @@ export function AdminRoom() {
       </header>
 
       <main>
-        {/* <Toaster /> */}
-
         <div className="room-title">
           <h1>Sala {titleRoom}</h1>
           {questions.length > 0 && <span>{questions.length} Pergunta(s)</span>}

@@ -1,9 +1,16 @@
-import { database } from "../../service/firebase";
 import { useAuth } from "../../hooks/useAuth";
+import { database } from "../../service/firebase";
 
-import "./style.scss";
+import "./styles.scss";
+import { LikeType } from "../../types/like.type";
 
-export function LikeButton({ question, roomId }: any) {
+export function LikeButton({
+  roomId,
+  likeId,
+  likeCount,
+  isAnswered,
+  id: questionId,
+}: LikeType) {
   const { user } = useAuth();
 
   async function handleLikeQuestion(
@@ -23,13 +30,13 @@ export function LikeButton({ question, roomId }: any) {
 
   return (
     <button
-      className={`like-button ${question.likeId ? "liked" : ""} `}
+      className={`like-button ${likeId ? "liked" : ""} `}
       type="button"
       aria-label="Marca com gostei"
-      onClick={() => handleLikeQuestion(question.id, question.likeId)}
-      disabled={!user || question.isAnswered}
+      onClick={() => handleLikeQuestion(questionId, likeId)}
+      disabled={!user || isAnswered}
     >
-      <span>{question.likeCount}</span>
+      <span>{likeCount}</span>
       <svg
         width="24"
         height="24"

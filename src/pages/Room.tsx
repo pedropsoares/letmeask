@@ -1,4 +1,3 @@
-import toast, { Toaster } from "react-hot-toast";
 import { useParams, useHistory } from "react-router-dom";
 import { FormEvent, useState, useEffect } from "react";
 
@@ -45,13 +44,7 @@ export function Room() {
   async function handleSendQuestion(event: FormEvent) {
     event.preventDefault();
 
-    if (newQuestion.trim() === "") {
-      toast.error("field cannot be empty");
-      return;
-    }
-
     if (!user) {
-      toast.error("You must be logged");
       return;
     }
 
@@ -84,8 +77,6 @@ export function Room() {
       </header>
 
       <main>
-        <Toaster />
-
         <div className="room-title">
           <h1>Sala {titleRoom}</h1>
           {questions.length > 0 && <span>{questions.length} Pergunta(s)</span>}
@@ -111,29 +102,42 @@ export function Room() {
                 </button>{" "}
               </span>
             )}
-            <Button type="submit" disabled={!user}>
+            <Button type="submit" disabled={!user || newQuestion === ""}>
               Enviar pergunta
             </Button>
           </div>
         </form>
 
         <div className="question-list">
-          {questions.map((question) => {
-            return (
-              <Question
-                key={question.id}
-                author={question.author}
-                content={question.content}
-                isAnswered={question.isAnswered}
-                isHighlighted={question.isHighlighted}
-              >
-                <LikeButton
-                  question={question}
-                  roomId={roomId}
-                />
-              </Question>
-            );
-          })}
+          {questions.map(
+            ({
+              id,
+              author,
+              content,
+              isAnswered,
+              isHighlighted,
+              likeId,
+              likeCount,
+            }) => {
+              return (
+                <Question
+                  key={id}
+                  author={author}
+                  content={content}
+                  isAnswered={isAnswered}
+                  isHighlighted={isHighlighted}
+                >
+                  <LikeButton
+                    roomId={roomId}
+                    id={id}
+                    likeId={likeId}
+                    likeCount={likeCount}
+                    isAnswered={isAnswered}
+                  />
+                </Question>
+              );
+            },
+          )}
         </div>
       </main>
     </div>

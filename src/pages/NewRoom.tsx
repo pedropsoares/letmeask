@@ -6,8 +6,8 @@ import logo from "../assets/images/logo.svg";
 
 import "../styles/auth.scss";
 
+import { Button } from "../components/Button/index";
 import { database } from "../service/firebase";
-import { Button } from "../components/Button";
 import { useAuth } from "../hooks/useAuth";
 
 export function NewRoom() {

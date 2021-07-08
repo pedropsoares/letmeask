@@ -1,6 +1,6 @@
 import Spinner from "react-spinner-material";
 
-import "./style.scss";
+import "./styles.scss";
 
 import logoImg from "../../assets/images/logo.svg";
 
