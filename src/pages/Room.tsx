@@ -9,6 +9,7 @@ import { LikeButton } from "../components/LikeButton";
 import { Question } from "../components/Question";
 import { RoomCode } from "../components/RoomCode";
 import { Loading } from "../components/Loading";
+import { SideBar } from "../components/SideBar";
 import { database } from "../service/firebase";
 import { Button } from "../components/Button";
 import { useAuth } from "../hooks/useAuth";
@@ -69,6 +70,9 @@ export function Room() {
 
   return (
     <div id="page-room">
+    {user ? (
+      <SideBar id={user?.id} name={user?.name} avatar={user?.avatar} />
+    ) : <></>}
       <header>
         <div className="content">
           <img src={logoImg} alt="Letmeask" />

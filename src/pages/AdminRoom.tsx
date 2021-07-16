@@ -14,8 +14,11 @@ import { Question } from "../components/Question";
 import { RoomCode } from "../components/RoomCode";
 import { Loading } from "../components/Loading";
 import { database } from "../service/firebase";
+import { SideBar } from "../components/SideBar";
 import { Button } from "../components/Button";
 import { useRoom } from "../hooks/useRoom";
+import { useAuth } from "../hooks/useAuth";
+
 
 type RoomParams = {
   id: string;
@@ -23,8 +26,10 @@ type RoomParams = {
 
 export function AdminRoom() {
   const history = useHistory();
+  const { user } = useAuth();
   const { id: roomId } = useParams<RoomParams>();
   const { questions, titleRoom, isAuthoredByUser } = useRoom(roomId);
+
 
   const [loading, setLoading] = useState(true);
 
@@ -68,6 +73,8 @@ export function AdminRoom() {
 
   return (
     <div id="page-room">
+      <SideBar id={user?.id} name={user?.name} avatar={user?.avatar} />
+
       <header>
         <div className="content">
           <img src={logoImg} alt="Letmeask" />
